@@ -17,13 +17,17 @@ function handleNoBlogPosts() {
 }
 // a function that renders the list of blog posts if they exist. If not, call the no posts function.
 function renderBlogList() {
-    const formData = JSON.parse(localStorage.getItem('formData')); //retrieves blog data from local storage
+    const blogPosts = JSON.parse(localStorage.getItem('blogPosts')); //retrieves blogs from local storage
 
-    if (formData) {
+    if (blogPosts && blogPosts.length > 0) {
         mainElement.innerHTML = '' //clear main content before rendering
-        buildElement('h1', 'title', formData.title, mainElement); // add the title
-        buildElement('h3', 'username', formData.username, mainElement); //add the username
-        buildElement('p', 'content', formData.content, mainElement); //add the blog content
+
+        //iterate over array of posts
+        blogPosts.forEach((post) => {
+            buildElement('h1', 'title', post.title, mainElement); // add the title
+            buildElement('h3', 'username', `by ${post.username}`, mainElement); //add an author line
+         buildElement('p', 'content', post.content, mainElement); //add the blog content
+        });
     } else {
         handleNoBlogPosts();
     }
